@@ -18,7 +18,7 @@ For a GUI, Bob does not need much, but he must be able to see an overview of the
 Complete functionalities to support with following requirements:
 1. Can add, edit, delete and view details of projects.
 2. Can start and stop entry on a project multiple times. 
-3. Calculate total time (with date format hh:ss) spent on a project and display it in the project overview.
+3. Calculate total time (with date format hh:mm:ss) spent on a project and display it in the project overview.
 4. Make the page automatically update after updated projects and stop entries.
 
 ## Quick start:
