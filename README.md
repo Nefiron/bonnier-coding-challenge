@@ -19,7 +19,8 @@ Complete functionalities to support with following requirements:
 1. Can add, edit, delete and view details of projects.
 2. Can start and stop entry on a project multiple times. 
 3. Calculate total time (with date format hh:mm:ss) spent on a project and display it in the project overview.
-4. Make the page automatically update after updated projects and stop entries.
+4. Make the page automatically update after updated projects and stop entries without reload the page.
+5. Optional: You are welcome to add features/functions relevant to the project.
 
 ## Quick start:
 We have set up the basic developing environment for the project with docker compose. 
