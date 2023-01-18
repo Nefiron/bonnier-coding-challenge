@@ -22,7 +22,9 @@ window.Vue = require('vue').default;
 Vue.component('project', require('./components/Project.vue').default);
 Vue.component('projects', require('./components/Projects.vue').default);
 
-
+/**
+ * Vue Filters
+ */
 import moment from 'moment'
 Vue.filter('timeBetween', function(start, end) {
   if (start && end) {
@@ -35,10 +37,10 @@ Vue.filter('totalTime', function(items) {
     items.forEach(item => {
       let itemStart = moment(item.start);
       let itemEnd = moment(item.end);
-        totalTime += itemEnd.diff(itemStart, 'hours');
+        totalTime += itemEnd.diff(itemStart, "HH:mm:ss");
     });
 
-    return totalTime + " hours";
+    return moment(totalTime).format("HH:mm:ss")
 });
 
 export const eventBus = new Vue();

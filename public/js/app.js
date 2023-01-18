@@ -487,6 +487,10 @@ window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js
 Vue.component('project', (__webpack_require__(/*! ./components/Project.vue */ "./resources/js/components/Project.vue")["default"]));
 Vue.component('projects', (__webpack_require__(/*! ./components/Projects.vue */ "./resources/js/components/Projects.vue")["default"]));
 
+/**
+ * Vue Filters
+ */
+
 Vue.filter('timeBetween', function (start, end) {
   if (start && end) {
     return moment__WEBPACK_IMPORTED_MODULE_0___default().utc(moment__WEBPACK_IMPORTED_MODULE_0___default()(end).diff(moment__WEBPACK_IMPORTED_MODULE_0___default()(start))).format("HH:mm:ss");
@@ -497,9 +501,9 @@ Vue.filter('totalTime', function (items) {
   items.forEach(function (item) {
     var itemStart = moment__WEBPACK_IMPORTED_MODULE_0___default()(item.start);
     var itemEnd = moment__WEBPACK_IMPORTED_MODULE_0___default()(item.end);
-    totalTime += itemEnd.diff(itemStart, 'hours');
+    totalTime += itemEnd.diff(itemStart, "HH:mm:ss");
   });
-  return totalTime + " hours";
+  return moment__WEBPACK_IMPORTED_MODULE_0___default()(totalTime).format("HH:mm:ss");
 });
 var eventBus = new Vue();
 
