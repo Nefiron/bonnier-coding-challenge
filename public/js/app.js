@@ -12,6 +12,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app */ "./resources/js/app.js");
 //
 //
 //
@@ -43,6 +44,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -62,6 +64,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/projects', {
         name: this.projectName
       });
+      this.projectName = '';
+      _app__WEBPACK_IMPORTED_MODULE_0__.eventBus.$emit('project-created', this.projectName);
       $(this.$refs.modal).modal('hide');
     }
   }
@@ -190,33 +194,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      project: null,
-      projectName: '',
-      errors: null
+      project: '',
+      errors: ''
     };
-  },
-  computed: {
-    name: function name() {
-      if (this.project) {
-        return this.project.name;
-      }
-      return '';
-    }
   },
   methods: {
     open: function open(project) {
       this.project = project;
-      this.projectName = this.project.name;
       $(this.$refs.modal).modal('show');
     },
     closeModal: function closeModal() {
       $(this.$refs.modal).modal('hide');
-      this.projectName = '';
+      this.project = '';
     },
     submit: function submit() {
-      axios.put("/projects/".concat(this.project.id), {
-        name: this.projectName
-      });
+      axios.put("/projects/".concat(this.project.id), this.project);
       $(this.$refs.modal).modal('hide');
     }
   }
@@ -349,6 +341,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _AddProject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddProject */ "./resources/js/components/AddProject.vue");
 /* harmony import */ var _EditProject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EditProject */ "./resources/js/components/EditProject.vue");
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../app */ "./resources/js/app.js");
 //
 //
 //
@@ -394,6 +387,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -413,6 +407,12 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.projectList = this.$props.projects;
   },
+  created: function created() {
+    var _this = this;
+    _app__WEBPACK_IMPORTED_MODULE_2__.eventBus.$on('project-created', function (data) {
+      _this.reRenderList();
+    });
+  },
   methods: {
     addProject: function addProject() {
       this.$refs.add.open();
@@ -424,6 +424,12 @@ __webpack_require__.r(__webpack_exports__);
       axios["delete"]("/projects/".concat(project.id));
       var projectIndex = this.projectList.indexOf(project);
       this.projects.splice(projectIndex, 1);
+    },
+    reRenderList: function reRenderList() {
+      var _this2 = this;
+      axios.get("/projects").then(function (response) {
+        return _this2.projectList = response.data;
+      });
     }
   }
 });
@@ -434,8 +440,13 @@ __webpack_require__.r(__webpack_exports__);
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "eventBus": () => (/* binding */ eventBus)
+/* harmony export */ });
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -469,6 +480,7 @@ Vue.filter('hoursBetweenDates', function (startDate, endDate) {
 
 Vue.component('project', (__webpack_require__(/*! ./components/Project.vue */ "./resources/js/components/Project.vue")["default"]));
 Vue.component('projects', (__webpack_require__(/*! ./components/Projects.vue */ "./resources/js/components/Projects.vue")["default"]));
+var eventBus = new Vue();
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -38601,7 +38613,7 @@ var render = function () {
         _c("div", { staticClass: "modal-content" }, [
           _c("div", { staticClass: "modal-header" }, [
             _c("h5", { staticClass: "modal-title" }, [
-              _vm._v("Edit " + _vm._s(_vm.name)),
+              _vm._v("Edit " + _vm._s(_vm.project.name)),
             ]),
             _vm._v(" "),
             _c(
@@ -38655,8 +38667,8 @@ var render = function () {
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.projectName,
-                    expression: "projectName",
+                    value: _vm.project.name,
+                    expression: "project.name",
                   },
                 ],
                 staticClass: "form-control",
@@ -38665,13 +38677,13 @@ var render = function () {
                   name: "project_name",
                   id: "project_name",
                 },
-                domProps: { value: _vm.projectName },
+                domProps: { value: _vm.project.name },
                 on: {
                   input: function ($event) {
                     if ($event.target.composing) {
                       return
                     }
-                    _vm.projectName = $event.target.value
+                    _vm.$set(_vm.project, "name", $event.target.value)
                   },
                 },
               }),
@@ -38999,58 +39011,68 @@ var render = function () {
           _c(
             "tbody",
             _vm._l(_vm.projectList, function (project) {
-              return _c("tr", [
-                _c("td", { domProps: { textContent: _vm._s(project.name) } }),
-                _vm._v(" "),
-                _c("td", {
-                  domProps: { textContent: _vm._s(project.entries.length) },
-                }),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v("\n                        0\n                    "),
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "text-right" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-sm btn-dark",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function ($event) {
-                          $event.preventDefault()
-                          return _vm.editProject(project)
+              return _c(
+                "tr",
+                {
+                  on: {
+                    repopulate: function ($event) {
+                      return _vm.reRenderList()
+                    },
+                  },
+                },
+                [
+                  _c("td", { domProps: { textContent: _vm._s(project.name) } }),
+                  _vm._v(" "),
+                  _c("td", {
+                    domProps: { textContent: _vm._s(project.entries.length) },
+                  }),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v("\n                        0\n                    "),
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-right" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-dark",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function ($event) {
+                            $event.preventDefault()
+                            return _vm.editProject(project)
+                          },
                         },
                       },
-                    },
-                    [_vm._v("Edit")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-sm btn-danger",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function ($event) {
-                          $event.preventDefault()
-                          return _vm.deleteProject(project)
+                      [_vm._v("Edit")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-sm btn-danger",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function ($event) {
+                            $event.preventDefault()
+                            return _vm.deleteProject(project)
+                          },
                         },
                       },
-                    },
-                    [_vm._v("Delete")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass: "btn btn-sm btn-secondary",
-                      attrs: { href: "/projects/" + project.id },
-                    },
-                    [_vm._v("Details")]
-                  ),
-                ]),
-              ])
+                      [_vm._v("Delete")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-sm btn-secondary",
+                        attrs: { href: "/projects/" + project.id },
+                      },
+                      [_vm._v("Details")]
+                    ),
+                  ]),
+                ]
+              )
             }),
             0
           ),

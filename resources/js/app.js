@@ -34,6 +34,9 @@ Vue.filter('hoursBetweenDates', function (startDate, endDate) {
 Vue.component('project', require('./components/Project.vue').default);
 Vue.component('projects', require('./components/Projects.vue').default);
 
+
+export const eventBus = new Vue();
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

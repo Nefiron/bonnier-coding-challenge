@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { eventBus } from "../app";
+
 export default {
     data: () => ({
         projectName: '',
@@ -43,9 +45,9 @@ export default {
             this.projectName = '';
         },
         submit() {
-            axios.post('/projects', {
-                name: this.projectName
-            });
+            axios.post('/projects', {name: this.projectName});
+            this.projectName = '';
+            eventBus.$emit('project-created', this.projectName)
             $(this.$refs.modal).modal('hide');
         }
     }

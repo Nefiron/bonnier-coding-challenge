@@ -22,7 +22,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="project in projectList">
+                    <tr v-for="project in projectList" @repopulate="reRenderList()">
                         <td v-text="project.name"></td>
                         <td v-text="project.entries.length"></td>
                         <td>
@@ -46,6 +46,7 @@
 <script>
 import AddProject from "./AddProject";
 import EditProject from "./EditProject";
+import { eventBus } from "../app";
 
 export default {
     name: "Projects",
@@ -61,6 +62,11 @@ export default {
     mounted() {
         this.projectList = this.$props.projects
     },
+    created() {
+        eventBus.$on('project-created', (data) => {
+            this.reRenderList()
+        })
+    },
     methods: {
         addProject() {
             this.$refs.add.open();
@@ -72,6 +78,9 @@ export default {
             axios.delete(`/projects/${project.id}`)
             const projectIndex = this.projectList.indexOf(project)
             this.projects.splice(projectIndex, 1)
+        },
+        reRenderList() {
+            axios.get(`/projects`).then(response => this.projectList = response.data)
         }
     }
 }

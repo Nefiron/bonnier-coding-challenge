@@ -3,7 +3,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit {{ name }}</h5>
+                    <h5 class="modal-title">Edit {{ project.name }}</h5>
                     <button type="button" class="close" @click.prevent="closeModal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
@@ -16,7 +16,7 @@
                     </div>
                     <div class="form-group">
                         <label for="project_name">Project name</label>
-                        <input type="text" name="project_name" id="project_name" class="form-control" v-model="projectName" />
+                        <input type="text" name="project_name" id="project_name" class="form-control" v-model="project.name" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -31,32 +31,20 @@
 <script>
 export default {
     data: () => ({
-        project: null,
-        projectName: '',
-        errors: null,
+        project: '',
+        errors: '',
     }),
-    computed: {
-        name() {
-            if (this.project) {
-                return this.project.name;
-            }
-            return '';
-        }
-    },
     methods: {
         open(project) {
             this.project = project
-            this.projectName = this.project.name
            $(this.$refs.modal).modal('show');
         },
         closeModal() {
             $(this.$refs.modal).modal('hide');
-            this.projectName = '';
+            this.project = ''
         },
         submit() {
-            axios.put(`/projects/${this.project.id}`, {
-                name: this.projectName
-            });
+            axios.put(`/projects/${this.project.id}`, this.project);
             $(this.$refs.modal).modal('hide');
         }
     }

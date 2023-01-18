@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $projects = Project::with('entries')->get();
+
+        if ($request->expectsJson()) {
+            return response()->json($projects);
+        }
 
         return view('projects.index', ['projects' => $projects]);
     }
