@@ -6,7 +6,19 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+window.Vue = require('vue').default;
+
+/**
+ * Vue filters
+ */
+Vue.filter('hoursBetweenDates', function (startDate, endDate) {
+    let startTime = new Date(startDate);
+    let endTime = new Date(endDate);
+    let diff = endTime.getTime() - startTime.getTime();
+    let diffInHours = diff / (1000 * 60 * 60);
+
+    return `${diffInHours} hours`;
+});
 
 /**
  * The following block of code may be used to automatically register your

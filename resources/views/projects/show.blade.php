@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col">
-            <project :project="{{ json_encode($project) }}"></project>
+            <project :project='@json($project)'></project>
         </div>
     </div>
 </div>

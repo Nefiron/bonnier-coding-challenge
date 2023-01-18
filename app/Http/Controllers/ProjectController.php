@@ -12,17 +12,21 @@ class ProjectController extends Controller
         $this->middleware('auth');
     }
 
-    public function show(int $projectID)
+    public function show(Project $project)
     {
-        $project = Project::with('entries')->find($projectID);
-        return view('projects.show', ['project' => $project]);
+        $showProject = Project::with(['entries' => function($q) {
+            $q->orderBy('start', 'desc');
+        }])->find($project->id);
+
+        return view('projects.show', ['project' => $showProject]);
     }
 
-    public function add(Request $request)
+    public function store(Request $request)
     {
         Project::create([
             'name' => $request->get('name')
         ]);
+
         return response()->json(['status' => 'success']);
     }
 
@@ -31,6 +35,7 @@ class ProjectController extends Controller
         $project = Project::find($request->get('id'));
         $project->name = $request->get('name');
         $project->save();
+
         return response()->json(['status' => 'success']);
     }
 }

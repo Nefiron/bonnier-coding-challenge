@@ -19,37 +19,72 @@
                     <th>Start date</th>
                     <th>End date</th>
                     <th>Time spent</th>
+                    <th>Options</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="entry in project.entries">
-                    <td v-text="entry.start"></td>
-                    <td v-text="entry.end"></td>
+                <tr v-show="currentWorkingEntry" class="table-warning">
+                    <td> {{ currentWorkingEntry.start }}</td>
+                    <td> {{ currentWorkingEntry.end }}</td>
                     <td>
-                        <!-- TODO: Calculate time spent -->
-                        0 hours
+                        {{ currentWorkingEntry.start | hoursBetweenDates(currentWorkingEntry.end) }}
+                    </td>
+                    <td>Current Active</td>
+                </tr>
+                <tr v-for="entry in entries">
+                    <td> {{ entry.start }}</td>
+                    <td> {{ entry.end }}</td>
+                    <td>
+                        {{ entry.start | hoursBetweenDates(entry.end) }}
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" @click="editEntry(entry)">Edit</button>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <edit-entry ref="edit"></edit-entry>
     </div>
 </template>
 
 <script>
+import EditEntry from './EditEntry.vue';
+
 export default {
     name: "Project",
+    components: {
+        'edit-entry': EditEntry
+    },
     props: ['project'],
     data: () => ({
-        running: false
+        running: false,
+        currentWorkingEntry: '',
+        entries: ''
     }),
+    mounted() {
+        this.entries = this.$props.project.entries
+    },
     methods: {
         startTimer() {
             this.running = true;
-            // TODO: Implement start functionality
+
+            axios.post(`/projects/${this.$props.project.id}/entries`)
+                .then(response => {
+                    this.currentWorkingEntry = response.data
+                })
+
         },
         stopTimer() {
-            this.running = false;
-            // TODO: Implement stop functionality
+            axios.put(`/projects/${this.$props.project.id}/entries/${this.currentWorkingEntry.id}`)
+                .then(response => {
+                    this.entries = response.data
+                    this.running = false;
+                    this.currentWorkingEntry = ''
+                })
+
+        },
+        editEntry(entry) {
+            this.$refs.edit.open(entry);
         }
     }
 }
