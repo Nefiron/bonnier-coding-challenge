@@ -79,7 +79,6 @@ export default {
                 .then(response => {
                     this.currentWorkingEntry = response.data
                 })
-
         },
         stopTimer() {
             axios.put(`/projects/${this.$props.project.id}/entries/${this.currentWorkingEntry.id}/stop`)
