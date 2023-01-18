@@ -26,10 +26,6 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/projects', 'ProjectController@index');
 Route::post('/projects', 'ProjectController@store');
 Route::get('/projects/{project}', 'ProjectController@show');
-
-// WIP Routes
-// Route::get('/projects/{project}/entries', 'ProjectEntryController@index');
-// Route::get('/projects/{project}/entries/{entry}', 'ProjectEntryController@show');
 Route::put('/projects/{project}/entries/{entry}', 'ProjectEntryController@update');
 Route::post('/projects/{project}/entries/start', 'StartEntryController');
 Route::put('/projects/{project}/entries/{entry}/stop', 'StopEntryController');

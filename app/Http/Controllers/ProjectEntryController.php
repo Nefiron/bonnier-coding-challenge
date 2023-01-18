@@ -9,18 +9,6 @@ use Illuminate\Http\Request;
 class ProjectEntryController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Project $project)
-    {
-        $entries = $project->entries()->orderBy('start', 'desc')->get();
-
-        return response()->json($entries);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
