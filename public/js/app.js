@@ -141,6 +141,7 @@ __webpack_require__.r(__webpack_exports__);
         entry: this.entry
       });
       $(this.$refs.modal).modal('hide');
+      this.entry = '';
     },
     remove: function remove() {}
   }
@@ -289,6 +290,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -311,7 +315,7 @@ __webpack_require__.r(__webpack_exports__);
     startTimer: function startTimer() {
       var _this = this;
       this.running = true;
-      axios.post("/projects/".concat(this.$props.project.id, "/entries")).then(function (response) {
+      axios.post("/projects/".concat(this.$props.project.id, "/entries/start")).then(function (response) {
         _this.currentWorkingEntry = response.data;
       });
     },
@@ -38429,10 +38433,34 @@ var render = function () {
                 )
               : _vm._e(),
             _vm._v(" "),
-            _vm._m(0),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "entry_task" } }, [_vm._v("Task")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.entry.task,
+                    expression: "entry.task",
+                  },
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", name: "entry_task", id: "entry_task" },
+                domProps: { value: _vm.entry.task },
+                on: {
+                  input: function ($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.entry, "task", $event.target.value)
+                  },
+                },
+              }),
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "project_name" } }, [
+              _c("label", { attrs: { for: "entry_start" } }, [
                 _vm._v("Start Date"),
               ]),
               _vm._v(" "),
@@ -38446,11 +38474,7 @@ var render = function () {
                   },
                 ],
                 staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  name: "project_name",
-                  id: "project_name",
-                },
+                attrs: { type: "text", name: "entry_start", id: "entry_start" },
                 domProps: { value: _vm.entry.start },
                 on: {
                   input: function ($event) {
@@ -38464,7 +38488,7 @@ var render = function () {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
-              _c("label", { attrs: { for: "project_name" } }, [
+              _c("label", { attrs: { for: "entry_end" } }, [
                 _vm._v("End Date"),
               ]),
               _vm._v(" "),
@@ -38478,11 +38502,7 @@ var render = function () {
                   },
                 ],
                 staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  name: "project_name",
-                  id: "project_name",
-                },
+                attrs: { type: "text", name: "entry_end", id: "entry_end" },
                 domProps: { value: _vm.entry.end },
                 on: {
                   input: function ($event) {
@@ -38547,21 +38567,7 @@ var render = function () {
     ]
   )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "project_name" } }, [_vm._v("Task")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", name: "project_name", id: "project_name" },
-      }),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38814,6 +38820,8 @@ var render = function () {
                 staticClass: "table-warning",
               },
               [
+                _c("td", [_vm._v(" " + _vm._s(_vm.currentWorkingEntry.task))]),
+                _vm._v(" "),
                 _c("td", [_vm._v(" " + _vm._s(_vm.currentWorkingEntry.start))]),
                 _vm._v(" "),
                 _c("td", [_vm._v(" " + _vm._s(_vm.currentWorkingEntry.end))]),
@@ -38837,6 +38845,8 @@ var render = function () {
             _vm._v(" "),
             _vm._l(_vm.entries, function (entry) {
               return _c("tr", [
+                _c("td", [_vm._v(" " + _vm._s(entry.task))]),
+                _vm._v(" "),
                 _c("td", [_vm._v(" " + _vm._s(entry.start))]),
                 _vm._v(" "),
                 _c("td", [_vm._v(" " + _vm._s(entry.end))]),
@@ -38884,6 +38894,8 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
+        _c("th", [_vm._v("Task")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Start date")]),
         _vm._v(" "),
         _c("th", [_vm._v("End date")]),

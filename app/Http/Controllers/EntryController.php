@@ -17,6 +17,7 @@ class EntryController extends Controller
     public function start(Request $request, Project $project)
     {
         $entry = $project->entries()->create([
+            'task' => 'New Task',
             'start' => Carbon::now(),
             'end' =>  Carbon::now()->addSecond(),
         ]);
@@ -24,7 +25,7 @@ class EntryController extends Controller
         return response()->json($entry);
     }
 
-    public function stop(Project $project, Entry $entry)
+    public function stop(Request $request, Project $project, Entry $entry)
     {
         $stopEntry = $project->entries()->find($entry->id);
 

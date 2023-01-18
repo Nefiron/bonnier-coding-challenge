@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Entry extends Model
 {
     protected $fillable = [
-        'start', 'end'
+        'task','start', 'end'
     ];
 
     public function project()

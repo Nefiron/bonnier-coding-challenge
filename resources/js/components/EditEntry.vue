@@ -15,16 +15,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="project_name">Task</label>
-                        <input type="text" name="project_name" id="project_name" class="form-control" />
+                        <label for="entry_task">Task</label>
+                        <input type="text" name="entry_task" id="entry_task" class="form-control" v-model="entry.task" />
                     </div>
                     <div class="form-group">
-                        <label for="project_name">Start Date</label>
-                        <input type="text" name="project_name" id="project_name" class="form-control" v-model="entry.start" />
+                        <label for="entry_start">Start Date</label>
+                        <input type="text" name="entry_start" id="entry_start" class="form-control" v-model="entry.start" />
                     </div>
                     <div class="form-group">
-                        <label for="project_name">End Date</label>
-                        <input type="text" name="project_name" id="project_name" class="form-control" v-model="entry.end" />
+                        <label for="entry_end">End Date</label>
+                        <input type="text" name="entry_end" id="entry_end" class="form-control" v-model="entry.end" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -55,6 +55,7 @@ export default {
         submit() {
             axios.put(`/projects/${this.entry.project_id}/entries/${this.entry.id}`, {entry: this.entry});
             $(this.$refs.modal).modal('hide');
+            this.entry = '';
         },
         remove() {
 

@@ -16,6 +16,7 @@
         <table class="card-table table">
             <thead>
                 <tr>
+                    <th>Task</th>
                     <th>Start date</th>
                     <th>End date</th>
                     <th>Time spent</th>
@@ -24,6 +25,7 @@
             </thead>
             <tbody>
                 <tr v-show="currentWorkingEntry" class="table-warning">
+                    <td> {{ currentWorkingEntry.task }}</td>
                     <td> {{ currentWorkingEntry.start }}</td>
                     <td> {{ currentWorkingEntry.end }}</td>
                     <td>
@@ -32,6 +34,7 @@
                     <td>Current Active</td>
                 </tr>
                 <tr v-for="entry in entries">
+                    <td> {{ entry.task }}</td>
                     <td> {{ entry.start }}</td>
                     <td> {{ entry.end }}</td>
                     <td>
@@ -68,7 +71,7 @@ export default {
         startTimer() {
             this.running = true;
 
-            axios.post(`/projects/${this.$props.project.id}/entries`)
+            axios.post(`/projects/${this.$props.project.id}/entries/start`)
                 .then(response => {
                     this.currentWorkingEntry = response.data
                 })

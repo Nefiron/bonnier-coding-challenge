@@ -15,6 +15,7 @@ class CreateEntriesTable extends Migration
     {
         Schema::create('entries', function (Blueprint $table) {
             $table->id();
+            $table->text('task');
             $table->dateTime('start');
             $table->dateTime('end');
             $table->unsignedBigInteger('project_id');
