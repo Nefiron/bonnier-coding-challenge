@@ -53,7 +53,8 @@ export default {
             this.entry = '';
         },
         submit() {
-            axios.put(`/projects/${this.entry.project_id}/entries/${this.entry.id}`, {entry: this.entry});
+            axios.put(`/projects/${this.entry.project_id}/entries/${this.entry.id}`, this.entry)
+            .then(response => console.log(response.data));
             $(this.$refs.modal).modal('hide');
             this.entry = '';
         },

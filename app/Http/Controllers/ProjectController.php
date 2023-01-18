@@ -12,6 +12,13 @@ class ProjectController extends Controller
         $this->middleware('auth');
     }
 
+    public function index()
+    {
+        $projects = Project::with('entries')->get();
+
+        return view('projects.index', ['projects' => $projects]);
+    }
+
     public function show(Project $project)
     {
         $showProject = Project::with(['entries' => function($q) {

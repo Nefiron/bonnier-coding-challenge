@@ -21,26 +21,19 @@ class ProjectEntryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Project $project, Entry $entry)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Project $project, Entry $entry, Request $request)
     {
-        //
+        abort_if($entry->project_id !== $project->getKey(), 404);
+
+        $entry->update($request->all());
+
+        return response()->json($entry);
     }
 
     /**

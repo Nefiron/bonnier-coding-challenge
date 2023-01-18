@@ -137,8 +137,8 @@ __webpack_require__.r(__webpack_exports__);
       this.entry = '';
     },
     submit: function submit() {
-      axios.put("/projects/".concat(this.entry.project_id, "/entries/").concat(this.entry.id), {
-        entry: this.entry
+      axios.put("/projects/".concat(this.entry.project_id, "/entries/").concat(this.entry.id), this.entry).then(function (response) {
+        return console.log(response.data);
       });
       $(this.$refs.modal).modal('hide');
       this.entry = '';
