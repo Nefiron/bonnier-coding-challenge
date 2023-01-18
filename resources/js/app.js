@@ -9,18 +9,6 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 
 /**
- * Vue filters
- */
-Vue.filter('hoursBetweenDates', function (startDate, endDate) {
-    let startTime = new Date(startDate);
-    let endTime = new Date(endDate);
-    let diff = endTime.getTime() - startTime.getTime();
-    let diffInHours = diff / (1000 * 60 * 60);
-
-    return `${diffInHours} hours`;
-});
-
-/**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
  * components and automatically register them with their "basename".
@@ -34,6 +22,24 @@ Vue.filter('hoursBetweenDates', function (startDate, endDate) {
 Vue.component('project', require('./components/Project.vue').default);
 Vue.component('projects', require('./components/Projects.vue').default);
 
+
+import moment from 'moment'
+Vue.filter('timeBetween', function(start, end) {
+  if (start && end) {
+    return moment.utc(moment(end).diff(moment(start))).format("HH:mm:ss")
+  }
+})
+
+Vue.filter('totalTime', function(items) {
+    let totalTime = 0;
+    items.forEach(item => {
+      let itemStart = moment(item.start);
+      let itemEnd = moment(item.end);
+        totalTime += itemEnd.diff(itemStart, 'hours');
+    });
+
+    return totalTime + " hours";
+});
 
 export const eventBus = new Vue();
 

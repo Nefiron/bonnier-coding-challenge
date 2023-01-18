@@ -8,30 +8,35 @@
                     </div>
                     <div class="col-2">
                         <div class="text-right">
-                            <button type="button" class="btn btn-sm btn-success" @click.prevent="addProject">Add project</button>
+                            <button type="button" class="btn btn-sm btn-success" @click.prevent="addProject">
+                                Add project
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
             <table class="card-table table">
                 <thead>
-                <tr>
-                    <th>Project Name</th>
-                    <th>Entries</th>
-                    <th>Total time</th>
-                </tr>
+                    <tr>
+                        <th>Project Name</th>
+                        <th>Entries</th>
+                        <th>Total time</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr v-for="project in projectList" @repopulate="reRenderList()">
                         <td v-text="project.name"></td>
                         <td v-text="project.entries.length"></td>
                         <td>
-                            <!-- TODO: Calculate total hours spent -->
-                            0
+                            {{ project.entries | totalTime }}
                         </td>
                         <td class="text-right">
-                            <button type="button" class="btn btn-sm btn-dark" @click.prevent="editProject(project)">Edit</button>
-                            <button type="button" class="btn btn-sm btn-danger" @click.prevent="deleteProject(project)">Delete</button>
+                            <button type="button" class="btn btn-sm btn-dark" @click.prevent="editProject(project)">
+                                Edit
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger" @click.prevent="deleteProject(project)">
+                                Delete
+                            </button>
                             <a :href="`/projects/${project.id}`" class="btn btn-sm btn-secondary">Details</a>
                         </td>
                     </tr>
@@ -51,21 +56,21 @@ import { eventBus } from "../app";
 export default {
     name: "Projects",
     components: {
-        'add-project': AddProject,
-        'edit-project': EditProject
+        "add-project": AddProject,
+        "edit-project": EditProject,
     },
-    props: ['projects'],
+    props: ["projects"],
     data: () => ({
         running: false,
-        projectList: ''
+        projectList: "",
     }),
     mounted() {
-        this.projectList = this.$props.projects
+        this.projectList = this.$props.projects;
     },
     created() {
-        eventBus.$on('project-created', (data) => {
-            this.reRenderList()
-        })
+        eventBus.$on("project-created", (data) => {
+            this.reRenderList();
+        });
     },
     methods: {
         addProject() {
@@ -75,13 +80,15 @@ export default {
             this.$refs.edit.open(project);
         },
         deleteProject(project) {
-            axios.delete(`/projects/${project.id}`)
-            const projectIndex = this.projectList.indexOf(project)
-            this.projects.splice(projectIndex, 1)
+            axios.delete(`/projects/${project.id}`);
+            const projectIndex = this.projectList.indexOf(project);
+            this.projects.splice(projectIndex, 1);
         },
         reRenderList() {
-            axios.get(`/projects`).then(response => this.projectList = response.data)
-        }
-    }
-}
+            axios
+                .get(`/projects`)
+                .then((response) => (this.projectList = response.data));
+        },
+    },
+};
 </script>

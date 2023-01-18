@@ -4,7 +4,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Entry</h5>
-                    <button type="button" class="close" @click.prevent="closeModal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" @click.prevent="closeModal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div v-if="errors" class="alert alert-danger">
@@ -16,11 +17,13 @@
                     </div>
                     <div class="form-group">
                         <label for="entry_task">Task</label>
-                        <input type="text" name="entry_task" id="entry_task" class="form-control" v-model="entry.task" />
+                        <input type="text" name="entry_task" id="entry_task" class="form-control"
+                            v-model="entry.task" />
                     </div>
                     <div class="form-group">
                         <label for="entry_start">Start Date</label>
-                        <input type="text" name="entry_start" id="entry_start" class="form-control" v-model="entry.start" />
+                        <input type="text" name="entry_start" id="entry_start" class="form-control"
+                            v-model="entry.start" />
                     </div>
                     <div class="form-group">
                         <label for="entry_end">End Date</label>
@@ -45,7 +48,7 @@ export default {
     methods: {
         open(entry) {
             this.entry = entry
-           $(this.$refs.modal).modal('show');
+            $(this.$refs.modal).modal('show');
         },
         closeModal() {
             $(this.$refs.modal).modal('hide');

@@ -9,9 +9,10 @@ use Illuminate\Http\Request;
 class StartEntryController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Handle the incoming request to create an entry and start a timer.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function __invoke(Request $request, Project $project)

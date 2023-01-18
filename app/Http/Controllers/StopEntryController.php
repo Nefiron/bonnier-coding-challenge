@@ -10,9 +10,11 @@ use Illuminate\Http\Request;
 class StopEntryController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Handle the incoming request to update the end time and stop the timer.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param App\Entry $entry
+     * @param App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function __invoke(Request $request, Project $project, Entry $entry)

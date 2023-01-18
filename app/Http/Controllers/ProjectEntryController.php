@@ -12,7 +12,8 @@ class ProjectEntryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param App\Entry $entry
+     * @param App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function update(Project $project, Entry $entry, Request $request)
@@ -27,7 +28,8 @@ class ProjectEntryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param App\Entry $entry
+     * @param App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function destroy(Project $project, Entry $entry)

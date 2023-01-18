@@ -4,7 +4,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Add Project</h5>
-                    <button type="button" class="close" @click.prevent="closeModal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" @click.prevent="closeModal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div v-if="errors" class="alert alert-danger">
@@ -16,7 +17,8 @@
                     </div>
                     <div class="form-group">
                         <label for="project_name">Project name</label>
-                        <input type="text" name="project_name" id="project_name" class="form-control" v-model="projectName" />
+                        <input type="text" name="project_name" id="project_name" class="form-control"
+                            v-model="projectName" />
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -38,14 +40,14 @@ export default {
     }),
     methods: {
         open() {
-           $(this.$refs.modal).modal('show');
+            $(this.$refs.modal).modal('show');
         },
         closeModal() {
             $(this.$refs.modal).modal('hide');
             this.projectName = '';
         },
         submit() {
-            axios.post('/projects', {name: this.projectName});
+            axios.post('/projects', { name: this.projectName });
             this.projectName = '';
             eventBus.$emit('project-created', this.projectName)
             $(this.$refs.modal).modal('hide');

@@ -7,8 +7,10 @@
                 </div>
                 <div class="col-2">
                     <div class="text-right">
-                        <button v-show="running" type="button" class="btn btn-sm btn-danger" @click.prevent="stopTimer">Stop</button>
-                        <button v-show="!running" type="button" class="btn btn-sm btn-success" @click.prevent="startTimer">Start</button>
+                        <button v-show="running" type="button" class="btn btn-sm btn-danger"
+                            @click.prevent="stopTimer">Stop</button>
+                        <button v-show="!running" type="button" class="btn btn-sm btn-success"
+                            @click.prevent="startTimer">Start</button>
                     </div>
                 </div>
             </div>
@@ -29,16 +31,17 @@
                     <td> {{ currentWorkingEntry.start }}</td>
                     <td> {{ currentWorkingEntry.end }}</td>
                     <td>
-                        {{ currentWorkingEntry.start | hoursBetweenDates(currentWorkingEntry.end) }}
+                        {{ currentWorkingEntry.start | timeBetween(currentWorkingEntry.end) }}
                     </td>
-                    <td><button v-show="running" type="button" class="btn btn-sm btn-danger" @click.prevent="stopTimer">Stop Current</button></td>
+                    <td><button v-show="running" type="button" class="btn btn-sm btn-danger"
+                            @click.prevent="stopTimer">Stop Current</button></td>
                 </tr>
                 <tr v-for="entry in entries">
                     <td> {{ entry.task }}</td>
                     <td> {{ entry.start }}</td>
                     <td> {{ entry.end }}</td>
                     <td>
-                        {{ entry.start | hoursBetweenDates(entry.end) }}
+                        {{ entry.start | timeBetween(entry.end) }}
                     </td>
                     <td>
                         <button class="btn btn-sm btn-primary" @click="editEntry(entry)">Edit</button>
@@ -63,7 +66,7 @@ export default {
     data: () => ({
         running: false,
         currentWorkingEntry: '',
-        entries: ''
+        entries: '',
     }),
     mounted() {
         this.entries = this.$props.project.entries
