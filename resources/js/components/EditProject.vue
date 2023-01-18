@@ -54,8 +54,7 @@ export default {
             this.projectName = '';
         },
         submit() {
-            axios.post('/projects/update', {
-                id: this.project.id,
+            axios.put(`/projects/${this.project.id}`, {
                 name: this.projectName
             });
             $(this.$refs.modal).modal('hide');

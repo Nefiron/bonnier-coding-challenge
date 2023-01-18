@@ -7,11 +7,6 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
         $projects = Project::with('entries')->get();
@@ -44,5 +39,12 @@ class ProjectController extends Controller
         $project->save();
 
         return response()->json(['status' => 'success']);
+    }
+
+    public function destroy(Project $project)
+    {
+        $project->delete();
+
+        return response()->json(['message' => 'Project deleted']);
     }
 }

@@ -20,15 +20,16 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    //
+    Route::get('/projects', 'ProjectController@index');
+    Route::post('/projects', 'ProjectController@store');
+    Route::get('/projects/{project}', 'ProjectController@show');
+    Route::put('/projects/{project}', 'ProjectController@update');
+    Route::delete('/projects/{project}', 'ProjectController@destroy');
+    Route::put('/projects/{project}/entries/{entry}', 'ProjectEntryController@update');
+    Route::delete('/projects/{project}/entries/{entry}', 'ProjectEntryController@destroy');
+    Route::post('/projects/{project}/entries/start', 'StartEntryController');
+    Route::put('/projects/{project}/entries/{entry}/stop', 'StopEntryController');
 });
-
-Route::get('/projects', 'ProjectController@index');
-Route::post('/projects', 'ProjectController@store');
-Route::get('/projects/{project}', 'ProjectController@show');
-Route::put('/projects/{project}/entries/{entry}', 'ProjectEntryController@update');
-Route::post('/projects/{project}/entries/start', 'StartEntryController');
-Route::put('/projects/{project}/entries/{entry}/stop', 'StopEntryController');
 
 Route::fallback(function(){
     return redirect('login');

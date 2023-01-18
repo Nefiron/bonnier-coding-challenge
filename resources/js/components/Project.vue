@@ -31,7 +31,7 @@
                     <td>
                         {{ currentWorkingEntry.start | hoursBetweenDates(currentWorkingEntry.end) }}
                     </td>
-                    <td>Current Active</td>
+                    <td><button v-show="running" type="button" class="btn btn-sm btn-danger" @click.prevent="stopTimer">Stop Current</button></td>
                 </tr>
                 <tr v-for="entry in entries">
                     <td> {{ entry.task }}</td>
@@ -41,7 +41,8 @@
                         {{ entry.start | hoursBetweenDates(entry.end) }}
                     </td>
                     <td>
-                        <button class="btn btn-primary" @click="editEntry(entry)">Edit</button>
+                        <button class="btn btn-sm btn-primary" @click="editEntry(entry)">Edit</button>
+                        <button class="btn btn-sm btn-danger" @click="deleteEntry(entry)">Delete</button>
                     </td>
                 </tr>
             </tbody>
@@ -88,6 +89,11 @@ export default {
         },
         editEntry(entry) {
             this.$refs.edit.open(entry);
+        },
+        deleteEntry(entry) {
+            axios.delete(`/projects/${this.$props.project.id}/entries/${entry.id}`)
+            const entryIndex = this.entries.indexOf(entry)
+            this.entries.splice(entryIndex, 1)
         }
     }
 }

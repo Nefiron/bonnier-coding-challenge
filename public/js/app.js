@@ -59,7 +59,7 @@ __webpack_require__.r(__webpack_exports__);
       this.projectName = '';
     },
     submit: function submit() {
-      axios.post('/projects/add', {
+      axios.post('/projects', {
         name: this.projectName
       });
       $(this.$refs.modal).modal('hide');
@@ -118,7 +118,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -137,13 +136,10 @@ __webpack_require__.r(__webpack_exports__);
       this.entry = '';
     },
     submit: function submit() {
-      axios.put("/projects/".concat(this.entry.project_id, "/entries/").concat(this.entry.id), this.entry).then(function (response) {
-        return console.log(response.data);
-      });
+      axios.put("/projects/".concat(this.entry.project_id, "/entries/").concat(this.entry.id), this.entry);
       $(this.$refs.modal).modal('hide');
       this.entry = '';
-    },
-    remove: function remove() {}
+    }
   }
 });
 
@@ -218,8 +214,7 @@ __webpack_require__.r(__webpack_exports__);
       this.projectName = '';
     },
     submit: function submit() {
-      axios.post('/projects/update', {
-        id: this.project.id,
+      axios.put("/projects/".concat(this.project.id), {
         name: this.projectName
       });
       $(this.$refs.modal).modal('hide');
@@ -241,6 +236,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _EditEntry_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EditEntry.vue */ "./resources/js/components/EditEntry.vue");
+//
 //
 //
 //
@@ -329,6 +325,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     editEntry: function editEntry(entry) {
       this.$refs.edit.open(entry);
+    },
+    deleteEntry: function deleteEntry(entry) {
+      axios["delete"]("/projects/".concat(this.$props.project.id, "/entries/").concat(entry.id));
+      var entryIndex = this.entries.indexOf(entry);
+      this.entries.splice(entryIndex, 1);
     }
   }
 });
@@ -393,7 +394,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -404,12 +404,26 @@ __webpack_require__.r(__webpack_exports__);
     'edit-project': _EditProject__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: ['projects'],
+  data: function data() {
+    return {
+      running: false,
+      projectList: ''
+    };
+  },
+  mounted: function mounted() {
+    this.projectList = this.$props.projects;
+  },
   methods: {
     addProject: function addProject() {
       this.$refs.add.open();
     },
     editProject: function editProject(project) {
       this.$refs.edit.open(project);
+    },
+    deleteProject: function deleteProject(project) {
+      axios["delete"]("/projects/".concat(project.id));
+      var projectIndex = this.projectList.indexOf(project);
+      this.projects.splice(projectIndex, 1);
     }
   }
 });
@@ -38520,21 +38534,6 @@ var render = function () {
             _c(
               "button",
               {
-                staticClass: "btn btn-danger",
-                attrs: { type: "button" },
-                on: {
-                  click: function ($event) {
-                    $event.preventDefault()
-                    return _vm.remove($event)
-                  },
-                },
-              },
-              [_vm._v("Delete")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
                 staticClass: "btn btn-secondary",
                 attrs: { type: "button" },
                 on: {
@@ -38839,7 +38838,30 @@ var render = function () {
                   ),
                 ]),
                 _vm._v(" "),
-                _c("td", [_vm._v("Current Active")]),
+                _c("td", [
+                  _c(
+                    "button",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.running,
+                          expression: "running",
+                        },
+                      ],
+                      staticClass: "btn btn-sm btn-danger",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function ($event) {
+                          $event.preventDefault()
+                          return _vm.stopTimer($event)
+                        },
+                      },
+                    },
+                    [_vm._v("Stop Current")]
+                  ),
+                ]),
               ]
             ),
             _vm._v(" "),
@@ -38865,7 +38887,7 @@ var render = function () {
                   _c(
                     "button",
                     {
-                      staticClass: "btn btn-primary",
+                      staticClass: "btn btn-sm btn-primary",
                       on: {
                         click: function ($event) {
                           return _vm.editEntry(entry)
@@ -38873,6 +38895,19 @@ var render = function () {
                       },
                     },
                     [_vm._v("Edit")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-sm btn-danger",
+                      on: {
+                        click: function ($event) {
+                          return _vm.deleteEntry(entry)
+                        },
+                      },
+                    },
+                    [_vm._v("Delete")]
                   ),
                 ]),
               ])
@@ -38963,7 +38998,7 @@ var render = function () {
           _vm._v(" "),
           _c(
             "tbody",
-            _vm._l(_vm.projects, function (project) {
+            _vm._l(_vm.projectList, function (project) {
               return _c("tr", [
                 _c("td", { domProps: { textContent: _vm._s(project.name) } }),
                 _vm._v(" "),
@@ -38996,6 +39031,12 @@ var render = function () {
                     {
                       staticClass: "btn btn-sm btn-danger",
                       attrs: { type: "button" },
+                      on: {
+                        click: function ($event) {
+                          $event.preventDefault()
+                          return _vm.deleteProject(project)
+                        },
+                      },
                     },
                     [_vm._v("Delete")]
                   ),
@@ -39043,8 +39084,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Entries")]),
         _vm._v(" "),
         _c("th", [_vm._v("Total time")]),
-        _vm._v(" "),
-        _c("th"),
       ]),
     ])
   },

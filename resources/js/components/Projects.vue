@@ -19,11 +19,10 @@
                     <th>Project Name</th>
                     <th>Entries</th>
                     <th>Total time</th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="project in projects">
+                    <tr v-for="project in projectList">
                         <td v-text="project.name"></td>
                         <td v-text="project.entries.length"></td>
                         <td>
@@ -32,7 +31,7 @@
                         </td>
                         <td class="text-right">
                             <button type="button" class="btn btn-sm btn-dark" @click.prevent="editProject(project)">Edit</button>
-                            <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                            <button type="button" class="btn btn-sm btn-danger" @click.prevent="deleteProject(project)">Delete</button>
                             <a :href="`/projects/${project.id}`" class="btn btn-sm btn-secondary">Details</a>
                         </td>
                     </tr>
@@ -55,12 +54,24 @@ export default {
         'edit-project': EditProject
     },
     props: ['projects'],
+    data: () => ({
+        running: false,
+        projectList: ''
+    }),
+    mounted() {
+        this.projectList = this.$props.projects
+    },
     methods: {
         addProject() {
             this.$refs.add.open();
         },
         editProject(project) {
             this.$refs.edit.open(project);
+        },
+        deleteProject(project) {
+            axios.delete(`/projects/${project.id}`)
+            const projectIndex = this.projectList.indexOf(project)
+            this.projects.splice(projectIndex, 1)
         }
     }
 }

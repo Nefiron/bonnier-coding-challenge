@@ -43,7 +43,7 @@ export default {
             this.projectName = '';
         },
         submit() {
-            axios.post('/projects/add', {
+            axios.post('/projects', {
                 name: this.projectName
             });
             $(this.$refs.modal).modal('hide');

@@ -30,8 +30,12 @@ class ProjectEntryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Project $project, Entry $entry)
     {
-        //
+        abort_if($entry->project_id !== $project->getKey(), 404);
+
+        $entry->delete();
+
+        return response()->json(['message' => 'Entry deleted']);
     }
 }

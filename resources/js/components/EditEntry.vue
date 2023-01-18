@@ -28,7 +28,6 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" @click.prevent="remove">Delete</button>
                     <button type="button" class="btn btn-secondary" @click.prevent="closeModal">Cancel</button>
                     <button type="button" class="btn btn-success" @click.prevent="submit">Save Changes</button>
                 </div>
@@ -54,12 +53,8 @@ export default {
         },
         submit() {
             axios.put(`/projects/${this.entry.project_id}/entries/${this.entry.id}`, this.entry)
-            .then(response => console.log(response.data));
             $(this.$refs.modal).modal('hide');
             this.entry = '';
-        },
-        remove() {
-
         }
     }
 }
