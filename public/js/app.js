@@ -321,7 +321,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     stopTimer: function stopTimer() {
       var _this2 = this;
-      axios.put("/projects/".concat(this.$props.project.id, "/entries/").concat(this.currentWorkingEntry.id)).then(function (response) {
+      axios.put("/projects/".concat(this.$props.project.id, "/entries/").concat(this.currentWorkingEntry.id, "/stop")).then(function (response) {
         _this2.entries = response.data;
         _this2.running = false;
         _this2.currentWorkingEntry = '';

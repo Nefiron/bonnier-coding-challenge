@@ -36,7 +36,7 @@ Route::put('/projects/{project}/entries/{entry}', 'EntryController@stop');
 // Route::get('/projects/{project}/entries/{entry}', 'ProjectEntryController@show');
 // Route::put('/projects/{project}/entries/{entry}', 'ProjectEntryController@update');
 Route::post('/projects/{project}/entries/start', 'StartEntryController');
-// Route::put('/projects/{project}/entries/{entry}/stop', 'StopEntryController');
+Route::put('/projects/{project}/entries/{entry}/stop', 'StopEntryController');
 
 Route::fallback(function(){
     return redirect('login');

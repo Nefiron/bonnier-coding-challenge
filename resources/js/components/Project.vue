@@ -78,7 +78,7 @@ export default {
 
         },
         stopTimer() {
-            axios.put(`/projects/${this.$props.project.id}/entries/${this.currentWorkingEntry.id}`)
+            axios.put(`/projects/${this.$props.project.id}/entries/${this.currentWorkingEntry.id}/stop`)
                 .then(response => {
                     this.entries = response.data
                     this.running = false;
